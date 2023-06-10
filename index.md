@@ -1,10 +1,6 @@
 ---
-title: Huned Botee
-layout: page
+title: Home
+layout: default
 ---
 
-hello ^_^
-
-{% comment %}
-I'm an investor based in San Francisco. [More &rarr;](about)
-{% endcomment %}
+hello world
