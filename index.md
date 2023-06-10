@@ -3,4 +3,4 @@ title: Home
 layout: default
 ---
 
-hello world
+&gt; rm -rf *
