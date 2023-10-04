@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      svg#snowfall {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: black;
+      }
+
+      .snowflake {
+        fill: white;
+        filter: drop-shadow(0 0 4px white);
+      }
+    </style>
+
+    <script>
+      const planes = 4;
+      const snowflakesPerPlane = 10;
+
+      // A snowflake is just a fancy circle.
+      const makeSnowflake = (x, y, r) => {
+        const snowflake = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        snowflake.setAttribute('class', 'snowflake');
+        snowflake.setAttribute('cx', x);
+        snowflake.setAttribute('cy', y);
+        snowflake.setAttribute('r', r);
+        return snowflake;
+      };
+
+      const initSnowfall = (parentEl) => {
+        const bbox = parentEl.getBoundingClientRect();
+
+        for (let i = 0; i < planes; i++) {
+          // create plane
+          const plane = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          const width = Math.ceil(bbox.width);
+          const height = Math.ceil(bbox.height * (i / 2 + 1)); // bigger planes
+
+          // populate it
+          for (let j = 0; j < snowflakesPerPlane; j++) {
+            const x = Math.floor(Math.random() * width);
+            const y = Math.floor(Math.random() * height);
+            const r = i + 1; // artistic license
+
+            let snowflake = makeSnowflake(x, y, r);
+            plane.appendChild(snowflake);
+            plane.animate([
+              { transform: `translateY(${-height}px)` },
+              { transform: `translateY(${height}px)` },
+            ], {
+              duration: (planes - i) * 20000, // seems OK
+              iterations: Infinity
+            });
+          }
+
+          // append plane
+          parentEl.appendChild(plane);
+        }
+      }
+
+      window.onload = () => {
+        initSnowfall(document.querySelector('#snowfall'));
+      };
+    </script>
+  </head>
+
+  <body>
+    <svg ns="http://www.w3.org/2000/svg" id="snowfall"></svg>
+  </body>
+</html>
